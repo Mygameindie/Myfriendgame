@@ -16,12 +16,17 @@ function hideItemsByCategory(categoryClass) {
 function toggleItem(itemId, categoryClass) {
     const item = document.getElementById(itemId);
 
-    // Check if item is the main layer and prevent toggling if so
-    if (itemId === 'base-image') return; // Prevent changes to the main layer
+    // Check if item is the main layer (base image) or face and prevent toggling if so
+    if (itemId === 'base-image' || itemId === 'face') return;
 
-    // Hide all other items in the same category
-    hideItemsByCategory(categoryClass);
+    // If the item is currently visible, hide it (i.e., second click removes it)
+    if (item.style.visibility === 'visible') {
+        item.style.visibility = 'hidden';
+    } else {
+        // Hide all other items in the same category
+        hideItemsByCategory(categoryClass);
 
-    // Show the selected item
-    item.style.visibility = 'visible';
+        // Show the selected item
+        item.style.visibility = 'visible';
+    }
 }
