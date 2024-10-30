@@ -1,0 +1,148 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+.game-container, .main-menu {
+    text-align: center;
+    width: 100%;
+}
+
+.main-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.main-menu img {
+    width: 500px;
+    height: auto;
+}
+
+.main-menu button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #6200ea;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+}
+
+.main-menu button:hover {
+    background-color: #3700b3;
+}
+
+.game-container {
+    display: none;
+}
+
+.base-container {
+    position: relative;
+    width: 500px;
+    height: 700px;
+    margin: 20px auto 0 auto;
+}
+
+.base-container img {
+    width: 500px;
+    height: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+/* Main layer (base image) that is always visible */
+#base-image {
+    z-index: 2; /* Fixed as the main layer */
+    position: relative;
+}
+
+/* Other layers stacking above or below the main layer */
+.backpackl, .backpackr {
+    z-index: 1;
+}
+
+.facel {
+    z-index: 3;
+}
+
+.facer {
+    z-index: 4;
+}
+
+.shoel {
+    z-index: 5;
+}
+
+.shoer {
+    z-index: 6;
+}
+
+.suit {
+    z-index: 7;
+}
+
+.bagl {
+    z-index: 8;
+}
+
+.bagr {
+    z-index: 9;
+}
+
+.capl {
+    z-index: 11;
+}
+
+.capr {
+    z-index: 12;
+}
+
+.scarfl {
+    z-index: 10;
+}
+
+.category {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.section {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+}
+
+h3 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.category img {
+    width: 50px;
+    height: auto;
+    margin: auto;
+    cursor: pointer;
+    border: 0.5px solid transparent;
+    border-radius: 2px;
+    object-fit: cover;
+}
+
+.category img:hover {
+    border-color: #3700b3;
+}
