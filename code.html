@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Dress-up Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .game-container, .main-menu {
+            text-align: center;
+            width: 100%;
+        }
+
+        .main-menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .main-menu img {
+            width: 500px;
+            height: auto;
+        }
+
+        .main-menu button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 20px;
+            cursor: pointer;
+            background-color: #6200ea;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .main-menu button:hover {
+            background-color: #3700b3;
+        }
+
+        .game-container {
+            display: none;
+        }
+
+        .base-container {
+            position: relative;
+            width: 500px;
+            height: 700px;
+            margin: 20px auto 0 auto;
+        }
+
+        .base-container img {
+            width: 500px;
+            height: auto;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        /* Base image */
+        #base-image {
+            z-index: 2;
+        }
+
+        /* Backpack */
+        .backpack {
+            z-index: 1;
+        }
+
+        /* Shoes */
+        .shoes {
+            z-index: 3;
+        }
+
+        /* Suit */
+        .suit {
+            z-index: 4;
+        }
+
+        /* Bag */
+        .bag {
+            z-index: 5;
+        }
+
+        /* Cap */
+        .cap {
+            z-index: 6;
+        }
+
+        /* Scarf */
+        .scarf {
+            z-index: 7;
+        }
+
+        .category {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .section {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+        }
+
+        h3 {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .category img {
+            width: 50px;
+            height: auto;
+            margin: auto;
+            cursor: pointer;
+            border: 0.5px solid transparent;
+            border-radius: 2px;
+            object-fit: cover;
+        }
+
+        .category img:hover {
+            border-color: #3700b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-menu">
+        <img src="Base.png" alt="Main Menu Image">
+        <button onclick="enterGame()">Play</button>
+    </div>
+
+    <div class="game-container">
+        <div class="base-container">
+            <!-- Base character image -->
+            <img id="base-image" src="Base.png" alt="Base Image">
+
+            <!-- Existing backpack images -->
+            <img id="backpack-left1" class="backpack" src="BackpackL.PNG" alt="Left Backpack" style="visibility: hidden;">
+            <img id="backpack-left2" class="backpack" src="BackpackL2.PNG" alt="Left Backpack" style="visibility: hidden;">
+            <img id="backpack-right1" class="backpack" src="BackpackR1.PNG" alt="Right Backpack" style="visibility: hidden;">
+
+            <!-- New backpack images -->
+            <img id="backpack-left3" class="backpack" src="BackpackL3.PNG" alt="Left Backpack 3" style="visibility: hidden;">
+            <img id="backpack-right2" class="backpack" src="BackpackR2.PNG" alt="Right Backpack 2" style="visibility: hidden;">
+
+            <!-- Existing shoes -->
+            <img id="shoes-left" class="shoes" src="ShoesL.PNG" alt="Left Shoes" style="visibility: hidden;">
+            <img id="shoes-right" class="shoes" src="ShoesR.PNG" alt="Right Shoes" style="visibility: hidden;">
+
+            <!-- Existing suit -->
+            <img id="suit-right" class="suit" src="SuitR.PNG" alt="Right Suit" style="visibility: hidden;">
+
+            <!-- Existing bag images -->
+            <img id="bag-left1" class="bag" src="BagL2.PNG" alt="Left Bag" style="visibility: hidden;">
+            <img id="bag-left2" class="bag" src="BagL3.PNG" alt="Left Bag" style="visibility: hidden;">
+            <img id="bag-right" class="bag" src="BagR.PNG" alt="Right Bag" style="visibility: hidden;">
+
+            <!-- New bag images -->
+            <img id="bag-left4" class="bag" src="BagL4.PNG" alt="Left Bag 4" style="visibility: hidden;">
+            <img id="bag-right2" class="bag" src="BagR2.PNG" alt="Right Bag 2" style="visibility: hidden;">
+
+            <!-- Existing cap images -->
+            <img id="cap-left" class="cap" src="CapL2.PNG" alt="Left Cap" style="visibility: hidden;">
+            <img id="cap-right1" class="cap" src="CapR.PNG" alt="Right Cap" style="visibility: hidden;">
+            <img id="cap-right2" class="cap" src="CapR2.PNG" alt="Right Cap" style="visibility: hidden;">
+
+            <!-- New cap images -->
+            <img id="cap-left3" class="cap" src="CapL3.PNG" alt="Left Cap 3" style="visibility: hidden;">
+            <img id="cap-right3" class="cap" src="CapR3.PNG" alt="Right Cap 3" style="visibility: hidden;">
+
+            <!-- Existing scarf images -->
+            <img id="scarf-left" class="scarf" src="ScarfL.PNG" alt="Left Scarf" style="visibility: hidden;">
+            <img id="scarf-left2" class="scarf" src="ScarfL2.PNG" alt="Left Scarf" style="visibility: hidden;">
+
+            <!-- New scarf image -->
+            <img id="scarf-left3" class="scarf" src="ScarfL3.PNG" alt="Left Scarf 3" style="visibility: hidden;">
+        </div>
+
+        <div class="controls">
+            <!-- Existing controls for backpacks -->
+            <div class="category">
+                <h3>Backpacks</h3>
+                <div class="section">
+                    <img src="BackpackL.PNG" alt="Left Backpack Button" onclick="toggleItem('backpack-left1', 'backpack-left')">
+                    <img src="BackpackL2.PNG" alt="Left Backpack Button" onclick="toggleItem('backpack-left2', 'backpack-left')">
+                    <img src="BackpackR1.PNG" alt="Right Backpack Button" onclick="toggleItem('backpack-right1', 'backpack-right')">
+                    <!-- New controls for backpacks -->
+                    <img src="BackpackL3.PNG" alt="Left Backpack 3 Button" onclick="toggleItem('backpack-left3', 'backpack-left')">
+                    <img src="BackpackR2.PNG" alt="Right Backpack 2 Button" onclick="toggleItem('backpack-right2', 'backpack-right')">
+                </div>
+            </div>
+
+            <!-- Existing controls for shoes -->
+            <div class="category">
+                <h3>Shoes</h3>
+                <div class="section">
+                    <img src="ShoesL.PNG" alt="Left Shoes Button" onclick="toggleItem('shoes-left', 'shoes-left')">
+                    <img src="ShoesR.PNG" alt="Right Shoes Button" onclick="toggleItem('shoes-right', 'shoes-right')">
+                </div>
+            </div>
+
+            <!-- Existing controls for suits -->
+            <div class="category">
+                <h3>Suits</h3>
+                <div class="section">
+                    <img src="SuitR.PNG" alt="Right Suit Button" onclick="toggleItem('suit-right', 'suit-right')">
+                </div>
+            </div>
+
+            <!-- Existing controls for bags -->
+            <div class="category">
+                <h3>Bags</h3>
+                <div class="section">
+                    <img src="BagL2.PNG" alt="Left Bag Button" onclick="toggleItem('bag-left1', 'bag-left')">
+                    <img src="BagL3.PNG" alt="Left Bag Button" onclick="toggleItem('bag-left2', 'bag-left')">
+                    <img src="BagR.PNG" alt="Right Bag Button" onclick="toggleItem('bag-right', 'bag-right')">
+                    <!-- New controls for bags -->
+                    <img src="BagL4.PNG" alt="Left Bag 4 Button" onclick="toggleItem('bag-left4', 'bag-left')">
+                    <img src="BagR2.PNG" alt="Right Bag 2 Button" onclick="toggleItem('bag-right2', 'bag-right')">
+                </div>
+            </div>
+
+            <!-- Existing controls for caps -->
+            <div class="category">
+                <h3>Caps</h3>
+                <div class="section">
+                    <img src="CapL2.PNG" alt="Left Cap Button" onclick="toggleItem('cap-left', 'cap-left')">
+                    <img src="CapR.PNG" alt="Right Cap Button" onclick="toggleItem('cap-right1', 'cap-right')">
+                    <img src="CapR2.PNG" alt="Right Cap Button" onclick="toggleItem('cap-right2', 'cap-right')">
+                    <!-- New controls for caps -->
+                    <img src="CapL3.PNG" alt="Left Cap 3 Button" onclick="toggleItem('cap-left3', 'cap-left')">
+                    <img src="CapR3.PNG" alt="Right Cap 3 Button" onclick="toggleItem('cap-right3', 'cap-right')">
+                </div>
+            </div>
+
+            <!-- Existing controls for scarves -->
+            <div class="category">
+                <h3>Scarves</h3>
+                <div class="section">
+                    <img src="ScarfL.PNG" alt="Left Scarf Button" onclick="toggleItem('scarf-left', 'scarf-left')">
+                    <img src="ScarfL2.PNG" alt="Left Scarf Button" onclick="toggleItem('scarf-left2', 'scarf-left')">
+                    <!-- New control for scarves -->
+                    <img src="ScarfL3.PNG" alt="Left Scarf 3 Button" onclick="toggleItem('scarf-left3', 'scarf-left')">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to start the game
+        function enterGame() {
+            document.querySelector('.main-menu').style.display = 'none';
+            document.querySelector('.game-container').style.display = 'block';
+        }
+
+        // Helper function to hide all items in a given category
+        function hideItemsByCategory(categoryClass) {
+            const items = document.querySelectorAll(`[id^="${categoryClass}"]`);
+            items.forEach(item => {
+                item.style.visibility = 'hidden';
+            });
+        }
+
+        // Helper function to toggle visibility of a specific item, while ensuring no items in the same category stack
+        function toggleItem(itemId, categoryClass) {
+            const item = document.getElementById(itemId);
+
+            // If the clicked item is already visible, hide it and do not show any other item
+            if (item.style.visibility === 'visible') {
+                item.style.visibility = 'hidden';
+            } else {
+                // Hide all items in the same category before showing the selected one
+                hideItemsByCategory(categoryClass);
+                item.style.visibility = 'visible';
+            }
+        }
+    </script>
+</body>
+</html>
