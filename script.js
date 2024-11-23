@@ -20,7 +20,7 @@ function cacheCategoryElements(categoryClass) {
 
 // List of face elements (non-removable and non-stackable)
 const lockedFaceElements = {
-    left: ['face-left1', 'face-left2', 'face-left3', 'face-left4', 'face-left5'],
+    left: ['face-left1', 'face-left2', 'face-left3', 'face-left4', 'face-left5','face-left6'],
     right: ['face-right1', 'face-right2', 'face-right3', 'face-right4', 'face-right5']
 };
 
