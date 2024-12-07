@@ -1,131 +1,132 @@
-// Cached DOM elements
-const elementCache = new Map();
-const categoryCache = new Map();
 
-// Utility to cache elements by ID
-function getElementById(id) {
-    if (!elementCache.has(id)) {
-        elementCache.set(id, document.getElementById(id));
-    }
-    return elementCache.get(id);
-}
+// JSON file paths
+const jsonFiles = [
+    'accessories.json',
+    'backpack.json',
+    'jacket.json',
+    'pants.json',
+    'shoes.json',
+    'base.json',
+    'top.json',
+    'weapon.json',
+	'plants.json',
+	'waist.json',
+	'hat.json',
+];
 
-// Cache all items in a category
-function cacheCategoryElements(categoryClass) {
-    if (!categoryCache.has(categoryClass)) {
-        categoryCache.set(categoryClass, Array.from(document.querySelectorAll(`.${categoryClass}`)));
-    }
-    return categoryCache.get(categoryClass);
-}
-
-// List of face elements (non-removable and non-stackable)
-const lockedFaceElements = {
-    left: ['face-left1', 'face-left2', 'face-left3', 'face-left4', 'face-left5','face-left6'],
-    right: ['face-right1', 'face-right2', 'face-right3', 'face-right4', 'face-right5']
+// Z-index mapping
+const zIndexMap = {
+    backpack: 1,
+    base: 2,
+    shoes: 3,
+    pants: 4,
+    top: 5,
+    jacket: 6,
+    accessories: 7,
+    weapon: 8,
+	plants: 9,
+	hat: 10,
+	waist: 11,
 };
 
-// Initialize visibility of locked face elements
-function initializeLockedFaces() {
-    const leftFace = getElementById(lockedFaceElements.left[0]);
-    const rightFace = getElementById(lockedFaceElements.right[0]);
-    if (leftFace) leftFace.style.visibility = 'visible';
-    if (rightFace) rightFace.style.visibility = 'visible';
+// Load JSON files and initialize items
+async function loadItems() {
+    const baseContainer = document.querySelector('.base-container');
+    const controlsContainer = document.querySelector('.controls');
+
+    for (const file of jsonFiles) {
+        try {
+            const response = await fetch(file);
+            if (!response.ok) throw new Error(`Failed to load file: ${file}`);
+            const items = await response.json();
+            const category = file.replace('.json', '');
+
+            const categoryContainer = document.createElement('div');
+            categoryContainer.classList.add('category');
+
+            const categoryHeading = document.createElement('h3');
+            categoryHeading.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+            categoryContainer.appendChild(categoryHeading);
+
+            items.forEach(item => {
+                const img = document.createElement('img');
+                img.id = item.id;
+                img.src = item.src;
+                img.alt = item.alt;
+                img.classList.add(category);
+                img.style.visibility = item.visibility;
+                img.style.position = 'absolute';
+                img.style.zIndex = zIndexMap[category] || 0;
+                baseContainer.appendChild(img);
+
+                const button = document.createElement('img');
+                button.src = item.src; // Use item image as button
+                button.alt = `${item.alt} Button`;
+                button.classList.add('item-button');
+                button.onclick = () => toggleVisibility(item.id, category, item.lockVisibility);
+                categoryContainer.appendChild(button);
+            });
+
+            controlsContainer.appendChild(categoryContainer);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 }
 
-// Show a single face for a given side without allowing it to be hidden
-function showSingleFace(faceId, side) {
-    lockedFaceElements[side].forEach(id => {
-        const face = getElementById(id);
-        if (face) face.style.visibility = 'hidden';
-    });
-    const selectedFace = getElementById(faceId);
-    if (selectedFace) selectedFace.style.visibility = 'visible';
-}
+// Toggle item visibility
+function toggleVisibility(itemId, categoryName, lockVisibility) {
+    const categoryItems = document.querySelectorAll(`.${categoryName}`);
+    categoryItems.forEach(item => {
+        // Ensure locked items stay visible
+        if (item.id === 'base' && item.style.visibility === 'visible') {
+            return;
+        }
 
-// Lock z-index layering for suits and base
-function lockLayering() {
-    const baseImage = getElementById('base-image');
-    if (baseImage) baseImage.style.zIndex = 2; // Ensure base image is between backpacks and suits
-
-    const backpackLeft = cacheCategoryElements('backpackl');
-    const backpackRight = cacheCategoryElements('backpackr');
-    backpackLeft.forEach(backpack => backpack.style.zIndex = 1);
-    backpackRight.forEach(backpack => backpack.style.zIndex = 1);
-
-    const suitsLeft = cacheCategoryElements('suitl');
-    const suitsRight = cacheCategoryElements('suitr');
-    suitsLeft.forEach(suit => suit.style.zIndex = 3);
-    suitsRight.forEach(suit => suit.style.zIndex = 3);
-}
-
-// Toggle visibility of an item, with special handling for faces and suits
-function toggleItem(itemId, categoryClass) {
-    const item = getElementById(itemId);
-    if (!item) {
-        console.warn(`Element with ID '${itemId}' not found.`);
-        return;
-    }
-
-    // Special handling for faces to allow switching but prevent removal
-    if (categoryClass === 'facel' || categoryClass === 'facer') {
-        const side = categoryClass === 'facel' ? 'left' : 'right';
-        showSingleFace(itemId, side); // Show only the selected face, keeping one visible at all times
-        return;
-    }
-
-    // Restrict stacking for suits on the same side
-    if (categoryClass === 'suitl' || categoryClass === 'suitr') {
-        const suitsOnSameSide = cacheCategoryElements(categoryClass);
-
-        // Ensure no other suits in this category are visible
-        suitsOnSameSide.forEach(suit => {
-            if (suit.id !== itemId) {
-                suit.style.visibility = 'hidden'; // Hide all other suits on the same side
-            }
-        });
-
-        // Toggle visibility of the selected suit
-        item.style.visibility = (item.style.visibility === 'visible') ? 'hidden' : 'visible';
-        item.style.zIndex = 3; // Ensure correct z-index for the selected suit
-        return;
-    }
-
-    // Hide all other items in the same category to prevent stacking for other categories
-    const itemsInCategory = cacheCategoryElements(categoryClass);
-    itemsInCategory.forEach(categoryItem => {
-        if (categoryItem.id !== itemId) {
-            categoryItem.style.visibility = 'hidden';
+        if (item.id !== itemId) {
+            item.style.visibility = 'hidden';
         }
     });
 
-    // Toggle visibility of the selected item
-    item.style.visibility = (item.style.visibility === 'visible') ? 'hidden' : 'visible';
+    const selectedItem = document.getElementById(itemId);
+
+    // Prevent hiding locked items
+    if (selectedItem.id === 'base' || lockVisibility) {
+        return;
+    }
+
+    selectedItem.style.visibility =
+        selectedItem.style.visibility === 'visible' ? 'hidden' : 'visible';
 }
 
-// Transition from main menu to game container
+// Responsive layout adjustment
+function adjustLayout() {
+    const baseContainer = document.querySelector('.base-container');
+    const controlsContainer = document.querySelector('.controls');
+    const screenWidth = window.innerWidth;
+
+    if (screenWidth <= 600) {
+        baseContainer.style.display = 'flex';
+        baseContainer.style.flexWrap = 'nowrap';
+        baseContainer.style.justifyContent = 'space-between';
+    } else {
+        baseContainer.style.display = 'block';
+        baseContainer.style.width = '500px';
+        baseContainer.style.height = '400px';
+        controlsContainer.style.marginTop = 'auto';
+    }
+}
+
+// Initialize game mode
 function enterGame() {
-    const mainMenu = document.querySelector('.main-menu');
-    const gameContainer = document.querySelector('.game-container');
-    if (mainMenu && gameContainer) {
-        mainMenu.style.display = 'none';
-        gameContainer.style.display = 'block';
-    } else {
-        console.warn("Main menu or game container not found.");
-    }
+    document.querySelector('.main-menu').style.display = 'none';
+    document.querySelector('.game-container').style.display = 'block';
 }
 
-// Initialize the game setup
-function initializeGame() {
-    initializeLockedFaces();
-    lockLayering(); // Lock layering on initialization
+// Load items and apply layout adjustment on page load and resize
+window.onload = () => {
+    loadItems();
+    adjustLayout();
+};
 
-    const playButton = document.querySelector('.play-button');
-    if (playButton) {
-        playButton.addEventListener('click', enterGame);
-    } else {
-        console.warn("Play button not found.");
-    }
-}
-
-// Ensure game initializes after full page load
-window.onload = initializeGame;
+window.addEventListener('resize', adjustLayout);
